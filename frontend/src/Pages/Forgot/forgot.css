@@ -1,4 +1,4 @@
-.login-page{  
+.otp-page{  
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -11,29 +11,29 @@
           background-image: url('https://i0.wp.com/blog.inevent.com/wp-content/uploads/2021/09/Venue-Selection-Criteria-Hybrid-Events.png?fit=1180%2C570&ssl=1&resize=1280%2C720');
     background-size: cover;
 }
-.login-title{
+.otp-title{
     font-size: 45px;
     font-weight: 900;
 }
-.login-form{
+.otp-form{
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     text-align: center;
 }
-.login-form >label{
+.otp-form >label{
     margin: 10px 0px;
     font-weight:bolder;
 }
 
-.login-input{
+.otp-input{
     padding: 10px;
     border: none;
     background-color: black;
     color: white;
     width: 300px;
 }
-.login-btn{
+.otp-btn{
     margin-top: 20px;
     cursor: pointer;
     background-color: rgb(182, 115, 245);
@@ -42,17 +42,6 @@
     color: white;
     font-weight: 700;
     border-radius: 10px;
-}
-.register-btn-lg{
-    margin-top: 20px;
-    cursor: pointer;
-    background-color: rgb(100, 78, 228);
-    border: none;
-    color: white;
-    height: 30px;
-    border-radius: 10px;
-    font-weight: 700;
-    width: 200px;
 }
 ::placeholder { 
     color: white;

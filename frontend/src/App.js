@@ -5,6 +5,9 @@ import Register  from "./Pages/Register/Register"
 import Home from './Pages/Home/Home';
 import { CreateEvent } from './Pages/Create_event/CreateEvent';
 import More from './Pages/More/More';
+import Forgot from './Pages/Forgot/Forgot';
+import Notfound from './components/Notfound/Notfound';
+import Upcoming from './Pages/Upcoming/Upcoming';
 
 import {
   BrowserRouter,
@@ -22,6 +25,9 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/create" element={<CreateEvent />} />
         <Route path="/more" element={<More />} />
+        <Route path="/forgot" element={<Forgot />} />
+        <Route path="/upcoming" element={<Upcoming />} />
+        <Route path="*" element={<Notfound />} />
       </Routes>
     </BrowserRouter>
   );

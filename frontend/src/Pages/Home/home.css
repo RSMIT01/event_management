@@ -99,20 +99,7 @@ section p {
 		padding: 15px 40px;
 	}
 }
-/* events*/
-.Home_events h3 {
-	text-transform: uppercase;
-	font-size: 50px;
-	margin: 5% 0;
-	text-align: center;
-}
-@media (max-width: 1000px){
-	.Home_events h3 {
-		
-		font-size: 25px;
-		
-	}
-}
+
 /*about area*/
 
 ul.about-content {

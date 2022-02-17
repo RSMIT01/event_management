@@ -1,33 +1,22 @@
 import "./home.css"
-import React, { useRef } from 'react';
+import React from 'react';
 import Navbar from "../../components/Navbar/Navbar"
 import { Link } from "react-router-dom";
-import Events from "../../components/Events/Events";
-import smooth from "react-scroll/modules/mixins/smooth";
+
 
 const Home = () => {
 
-    const eventsections=useRef(null);
-
-    const gotoevents=()=>{
-        window.scrollTo({
-            top:eventsections.current.offsetTop,
-            behaviour:smooth
-        })
-    }
+    
     return (
         <div>
             <Navbar />
             <section className="banner-area">
                 <div className="banner-img"></div>
-                <h1>Welcome to Event Mania</h1>
-                <h3>Parcipate Events</h3>
-                <Link  className="banner-btn" to="/" onClick={gotoevents}>Upcoming events</Link>
+                <h1>Welcome to DDU Events</h1>
+                <h3>Parcipate to Events</h3>
+                <Link className="banner-btn" to="/upcoming" >Upcoming events</Link>
             </section>
-            <div className="Home_events" ref={eventsections}>
-            <h3>Upcoming  Events</h3>
-                <Events/>
-            </div>
+        
 
             <section className="about-area" id="about">
                 <h3 className="section-title">About Us</h3>
