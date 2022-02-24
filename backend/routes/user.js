@@ -1,22 +1,24 @@
 const router =require("express").Router();
 const User=require("../models/User");
+const Event=require("../models/Event");
 const Otp=require("../models/Otp")
 const bcrypt=require("bcrypt");
 const nodemailer=require('nodemailer');
 const e = require("express");
+require("dotenv").config();
 
  const mailer=(email,otp)=>{
     const tarnsporter=nodemailer.createTransport({
           service:'gmail',
           secure:false,
           auth:{
-              user:'sender_email',
-              pass:'sender_password'
+              user:process.env.SENDER_EMAIL,
+              pass:process.env.PASSWORD
           }
 
       })
       const mailoptions={
-          from:'sender',
+          from:process.env.SENDER_EMAIL,
           to:email,
           subject:'change password request',
           text:`your otp for reset password:${otp.code}`
@@ -144,4 +146,21 @@ router.post("/changepass",async (req,res)=>{
         res.status(500).json(error);
     }
 })
+
+//participate event
+router.post("/participate",async (req,res)=>{
+    try {
+        const user= await User.findById(req.body.uid);
+        const event=await Event.findById(req.body.eid)
+        await user.updateOne({$push:{myevents:req.body.eid}})
+        await event.updateOne({$push:{participants:req.body.uid}})
+        res.status(200).json("participated successfully")
+      
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
+
+
 module.exports=router;

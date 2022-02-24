@@ -29,6 +29,9 @@ const Navbar = () => {
             {user!=null  && user.role==="admin" && <Link to='/create' className='path'>
                <li>Create Event</li>
             </Link> }
+            {/* {user!=null  && user.role==="participant" && <Link to='/myevents' className='path'>
+               <li>Myevents</li>
+            </Link> } */}
             {user!=null && <Link to='/profile'className='path'>
            <li><i className="profile fas fa-user-circle fa-lg"></i></li> 
             </Link>}

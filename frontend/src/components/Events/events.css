@@ -73,6 +73,13 @@ img{
     color: blue;
     cursor: pointer;
 }
+.modal-header{
+    background-color: black;
+}
+.btn-close{
+  background-color: white;
+}
+
 @media screen and (max-width: 1000px)  {
 .event-conatainer{
     flex-direction: column;

@@ -8,6 +8,7 @@ import More from './Pages/More/More';
 import Forgot from './Pages/Forgot/Forgot';
 import Notfound from './components/Notfound/Notfound';
 import Upcoming from './Pages/Upcoming/Upcoming';
+import Myevents from './Pages/Myevents/Myevents';
 
 import {
   BrowserRouter,
@@ -27,6 +28,7 @@ function App() {
         <Route path="/more" element={<More />} />
         <Route path="/forgot" element={<Forgot />} />
         <Route path="/upcoming" element={<Upcoming />} />
+        <Route path="/myevents" element={<Myevents />} />
         <Route path="*" element={<Notfound />} />
       </Routes>
     </BrowserRouter>
