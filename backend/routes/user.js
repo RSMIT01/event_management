@@ -7,6 +7,7 @@ const nodemailer=require('nodemailer');
 const e = require("express");
 require("dotenv").config();
 
+//otp emailer
  const mailer=(email,otp)=>{
     const tarnsporter=nodemailer.createTransport({
           service:'gmail',
@@ -33,6 +34,37 @@ require("dotenv").config();
           }
       })
  }
+
+//participation mailer
+
+const particpation_mail=(email,title)=>{
+    const tarnsporter=nodemailer.createTransport({
+          service:'gmail',
+          secure:false,
+          auth:{
+              user:process.env.SENDER_EMAIL,
+              pass:process.env.PASSWORD
+          }
+
+      })
+      const mailoptions={
+          from:process.env.SENDER_EMAIL,
+          to:email,
+          subject:'Participated successfully',
+          text:`thank you for participate in ${title}`
+      }
+      tarnsporter.sendMail(mailoptions,(err,info)=>{
+          if(err)
+          {
+              console.log(err)
+          }
+          else{
+              console.log('email sent:'+ info.response);
+          }
+      })
+ }
+
+
 
 router.post("/register",async (req,res)=>{
     try {
@@ -154,6 +186,8 @@ router.post("/participate",async (req,res)=>{
         const event=await Event.findById(req.body.eid)
         await user.updateOne({$push:{myevents:req.body.eid}})
         await event.updateOne({$push:{participants:req.body.uid}})
+
+        particpation_mail(user.email,event.title);
         res.status(200).json("participated successfully")
       
     } catch (error) {

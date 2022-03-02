@@ -17,7 +17,6 @@ const Login = () => {
   const { dispatch } = useContext(AuthContext)
   const submited = async (e) => {
     e.preventDefault();
-
     const user = {
       email: email.current.value,
       password: password.current.value,

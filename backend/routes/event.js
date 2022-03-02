@@ -72,6 +72,7 @@ router.post("/allevent", async (req, res) => {
         res.status(500).json(err)
     }
 })
+
 //filter by date
 router.post("/filter_date", async (req, res) => {
     try {
@@ -80,6 +81,43 @@ router.post("/filter_date", async (req, res) => {
         events.map((ev) => {
             if (ev.datee >= req.body.from && ev.datee <= req.body.to) {
                 filtered.push(ev);
+            }
+        })
+        if (filtered.length != 0) {
+            res.status(200).json(filtered);
+        }
+
+    } catch (error) {
+        res.status(500).json(error)
+    }
+
+})
+
+
+//events for generate report 
+router.post("/report", async (req, res) => {
+    try {
+        const events = await Event.find();
+        let filtered = [];
+        events.map((ev) => {
+            if (ev.datee >= req.body.from && ev.datee <= req.body.to) {
+                 const newev={
+                    title: ev.title,
+                    category: ev.category,
+                    rp_name: ev.rp_name,
+                    organization: ev.organization,
+                    desc: ev.desc,
+                    venue: ev.venue,
+                    time: ev.time,
+                    datee: ev.datee,
+                    org_by: ev.org_by,
+                    tech_body: ev.tech_body,
+                    coordinator: ev.coordinator,
+                    fees: ev.fees,
+                    participants: ev.participants.length,
+
+                 }
+                filtered.push(newev);
             }
         })
         if (filtered.length != 0) {

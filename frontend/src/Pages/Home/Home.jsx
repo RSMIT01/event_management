@@ -1,53 +1,24 @@
 import "./home.css"
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Navbar from "../../components/Navbar/Navbar"
 import { Link } from "react-router-dom";
-import axios from "axios";
-import Events from "../../components/Events/Events";
-import Loading from "../../components/Loading/Loading";
 
 const Home = () => {
-   
-   const[pastevent,setPastevent]=useState([]);
-   const [Load, setLoad] = useState(true);
 
-    useEffect(() => {
-      
-        const fetchEvents = async () => {
 
-            const res = await axios.post("/event/pastevent");
-            setPastevent(res.data.sort((p1, p2) => {
-                return new Date(p1.datee) - new Date(p2.datee);
-            }));
-            setLoad(false);
-        };
-       
-        fetchEvents();
-    }, [])
-    
 
-    
+
+
     return (
         <div>
             <Navbar />
             <section className="banner-area">
                 <div className="banner-img"></div>
                 <h1>Welcome to DDU Events</h1>
-                <h3>Parcipate to Events</h3>
-                <Link className="banner-btn" to="/upcoming" >Upcoming events</Link>
+                <h3>Participate to Events</h3>
+                <Link className="banner-btn" to="/events" > Events</Link>
             </section>
-             <section className="past_events" >
-                <h3>Past  Events</h3>
-                <div>  
-               
-                {(Load) ? <Loading /> :
-                    <div>
-                        {pastevent.map((e)=>(
-                            <Events key={e._id} Event={e} p={false} />
-                        ))}
-                    </div>}
-                </div>
-             </section>
+
 
             <section className="about-area" id="about">
                 <h3 className="section-title">About Us</h3>

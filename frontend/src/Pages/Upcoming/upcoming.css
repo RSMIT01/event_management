@@ -5,15 +5,14 @@
 	margin: 5% 0;
 	text-align: center;
 }
+.past_events h3{
+	text-transform: uppercase;
+	font-size: 50px;
+	margin: 5% 0;
+	text-align: center;
+}
 .date_container{
-	display: flex;
-	margin-left: 5vw;
-}
-.input_date{
-	margin-left: 1vw;
-}
-.search_btn{
-	margin-left: 10px;
+	margin-top: 5vh;
 }
 @media (max-width: 1000px){
 	.Home_events h3 {
@@ -21,7 +20,5 @@
 		font-size: 25px;
 		
 	}
-	.date_container{
-		flex-direction: column;
-	}
+	
 }
