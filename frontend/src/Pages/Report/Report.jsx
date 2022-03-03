@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef,useContext } from 'react'
 import Navbar from '../../components/Navbar/Navbar';
 import { Exel } from '../../components/Exel/Exel';
-
+import Notfound from "../../components/Notfound/Notfound";
 import axios from 'axios';
 import "./report.css"
-
+import { AuthContext } from "../../context/AuthContext";
 
 
 const Report = () => {
@@ -12,7 +12,7 @@ const Report = () => {
   const from = useRef(null);
   const to = useRef(null);
   const fileName = "myfile";
-
+  const { user } = useContext(AuthContext)
 
 
 
@@ -31,8 +31,10 @@ const Report = () => {
 
   return (
     <div>
-      <Navbar />
-      {/* <div className="exel">
+      {(user != null && user.role === "admin") ?
+        <div>
+          <Navbar />
+          {/* <div className="exel">
 
       
       <div className="Home_events" >
@@ -57,30 +59,32 @@ const Report = () => {
 
        
       </div> */}
-      <div className="card text-center">
-        <div className="card-header fs-1">
-          Generate Report
-        </div>
-        <div className="card-body">
-          <h5 className="card-title">Select date</h5>
-          <form className="row g-3" onSubmit={date_filter}>
-            <div className="col-md-6">
-              <label htmlFor="inputEmail4" className="form-label">From</label>
-              <input type="date" ref={from} className="form-control" id="inputEmail4" />
+          <div className="card text-center">
+            <div className="card-header fs-1">
+              Generate Report
             </div>
-            <div className="col-md-6">
-              <label htmlFor="inputPassword4" className="form-label">TO</label>
-              <input type="date" ref={to} className="form-control" id="inputPassword4" />
+            <div className="card-body">
+              <h5 className="card-title">Select date</h5>
+              <form className="row g-3" onSubmit={date_filter}>
+                <div className="col-md-6">
+                  <label htmlFor="inputEmail4" className="form-label">From</label>
+                  <input type="date" ref={from} className="form-control" id="inputEmail4" />
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="inputPassword4" className="form-label">TO</label>
+                  <input type="date" ref={to} className="form-control" id="inputPassword4" />
+                </div>
+                <div className="col-12">
+                  <button type="submit" className="btn btn-primary">Filter</button>
+                </div>
+              </form>
             </div>
-            <div className="col-12">
-              <button type="submit" className="btn btn-primary">Filter</button>
+            <div className="card-footer text-muted">
+              {filtered.length !== 0 && <Exel apiData={filtered} fileName={fileName} />}
             </div>
-          </form>
-        </div>
-        <div className="card-footer text-muted">
-          {filtered.length !== 0 && <Exel apiData={filtered} fileName={fileName} />}
-        </div>
-      </div>
+          </div>
+        </div> :
+        <Notfound />}
     </div>
   )
 }

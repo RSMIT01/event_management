@@ -46,6 +46,10 @@ const EventSchema=new mongoose.Schema({
     participants:{
         type:Array,
         default:[]
+    },
+    uploaded:{
+        type:Array,
+        default:[]
     }
 })
 

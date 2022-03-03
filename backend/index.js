@@ -9,6 +9,7 @@ const path=require("path");
 
 const userRoute=require('./routes/user');
 const eventRoute=require('./routes/event');
+const certificateRoute=require('./routes/certificate');
 
 app.use("/images",express.static(path.join(__dirname,"public/images")))
 
@@ -41,3 +42,4 @@ app.post("/api/upload",upload.single("file"),(req,res)=>{
 
 app.use("/api/user",userRoute);
 app.use("/api/event",eventRoute);
+app.use("/api/certificate",certificateRoute);
