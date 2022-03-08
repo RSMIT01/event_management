@@ -1,5 +1,5 @@
 import "./more.css"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Navbar from "../../components/Navbar/Navbar";
 import axios from "axios";
 import Loading from '../../components/Loading/Loading';
@@ -8,8 +8,8 @@ import Loading from '../../components/Loading/Loading';
 const More = () => {
     const pb = process.env.REACT_APP_IMG_FOLDER;
     const id = localStorage.getItem('eid');
-
-
+    const refimg = useRef('');
+    const [cimage, setCimage] = useState('');
 
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
@@ -35,15 +35,39 @@ const More = () => {
         const getcertificates = async () => {
             const res = await axios.get(`/certificate/${id}`)
             setCertis(res.data);
-            console.log(res.data);
         }
         getcertificates();
     }, [id])
 
-
+    const clickimg = (img) => {
+        refimg.current.click();
+        setCimage(img);
+    }
 
     return (<div>
         <Navbar />
+        <div>
+            <button type="button" ref={refimg} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Launch demo modal
+            </button>
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-fullscreen">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body d-flex justify-content-center">
+                                <img className="certi_big_img"  src={cimage} alt="" />
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
         {(Load) ? <Loading /> :
             <div className="data_event">
                 <div className="event_data">
@@ -55,62 +79,62 @@ const More = () => {
 
 
                                 <tr>
-                                    <td>Category</td>
+                                    <td className="row_name" >Category</td>
                                     <td>{event.category}</td>
 
                                 </tr>
                                 <tr>
-                                    <td>Resource Person Name</td>
+                                    <td className="row_name">Resource Person Name</td>
                                     <td>{event.rp_name}</td>
 
                                 </tr>
                                 <tr>
-                                    <td>Organization</td>
+                                    <td className="row_name">Organization</td>
                                     <td>{event.organization}</td>
 
                                 </tr>
                                 <tr>
-                                    <td>Description</td>
+                                    <td className="row_name">Description</td>
                                     <td>{event.desc}</td>
 
                                 </tr>
                                 <tr>
-                                    <td>Venue</td>
+                                    <td className="row_name">Venue</td>
                                     <td>{event.venue}</td>
 
                                 </tr>
                                 <tr>
-                                    <td>Date</td>
+                                    <td className="row_name">Date</td>
                                     <td>{event.datee}</td>
 
                                 </tr>
                                 <tr>
-                                    <td>time</td>
+                                    <td className="row_name">time</td>
                                     <td>{event.time}</td>
 
                                 </tr>
                                 <tr>
-                                    <td>organized by</td>
+                                    <td className="row_name">organized by</td>
                                     <td>{event.org_by}</td>
 
                                 </tr>
                                 <tr>
-                                    <td>Technical body </td>
+                                    <td className="row_name">Technical body </td>
                                     <td>{event.tech_body}</td>
 
                                 </tr>
                                 <tr>
-                                    <td>Coordinator </td>
+                                    <td className="row_name">Coordinator </td>
                                     <td>i{event.coordinator}</td>
 
                                 </tr>
                                 <tr>
-                                    <td>Fees </td>
+                                    <td className="row_name">Fees </td>
                                     <td>{event.fees}</td>
 
                                 </tr>
                                 <tr>
-                                    <td>participants </td>
+                                    <td className="row_name">participants </td>
                                     <td>{event.participants.length}</td>
 
                                 </tr>
@@ -119,16 +143,18 @@ const More = () => {
 
                     </div>
                 </div>
-               {event.datee<today && <div className="certificate_container">
+                {event.datee < today && certis.length !== 0 && <div className="certificate_container">
                     <h3 className="certi_title">  Certificates  </h3>
-                    <div className="certis">
+                    <div className="row certis">
 
                         {certis.map((e) => (
-                            <div className="certificate_img">
-                                <h2 className="certi_name">{e.name}</h2>
-                                <img src={pb + e.certificate} className="event_image" alt="..." />
+                            <div key={e.certificate} className="col-md-6 certificate_img">
+                                <div className="d-flex justify-content-center">
+                                    <h2 className="certi_name bg-dark text-white p-3 rounded-circle">{e.name}</h2>
+                                </div>
+                                <img onClick={() => { clickimg(pb + e.certificate) }} src={pb + e.certificate} className="event_image" alt="..." />
                             </div>
-                        ))}
+                        ))}s
                     </div>
                 </div>}
             </div>}

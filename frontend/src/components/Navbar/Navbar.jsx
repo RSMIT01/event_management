@@ -23,6 +23,9 @@ const Navbar = () => {
             <Link to='/' className='path'>
                <li>Home</li>
             </Link>
+            <Link to='/events' className='path'>
+               <li>Events</li>
+            </Link>
             {user==null  && <Link to='/login' className='path'>
                <li>login</li>
             </Link> }

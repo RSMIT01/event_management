@@ -2,11 +2,14 @@ import "./home.css"
 import React from 'react';
 import Navbar from "../../components/Navbar/Navbar"
 import { Link } from "react-router-dom";
+import { useRef } from "react";
 
 const Home = () => {
+    const about = useRef()
 
-
-
+   const aboutclick=()=>{
+    about.current.scrollIntoView({ behavior: 'smooth' })
+   }
 
 
     return (
@@ -16,17 +19,18 @@ const Home = () => {
                 <div className="banner-img"></div>
                 <h1>Welcome to DDU Events</h1>
                 <h3>Participate to Events</h3>
-                <Link className="banner-btn" to="/events" > Events</Link>
+                
+                <Link onClick={aboutclick} className="banner-btn" to="/" > About Us</Link>
             </section>
 
 
-            <section className="about-area" id="about">
-                <h3 className="section-title">About Us</h3>
+            <section ref={about} className="about-area" id="about">
+                <h3 className="section-title" ref={about}>About Us</h3>
                 <ul className="about-content">
                     <li className="about-left"></li>
                     <li className="about-right">
-                        <h2>About our Company</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt iusto unde modi aspernatur amet blanditiis quibusdam ipsam. Veritatis, rerum, fuga.</p><Link to="/" ><button className="about-btn" >Learn more</button></Link>
+                        <p>Dharmsinh Desai University (DDU) formerly known as Dharmsinh Desai Institute of Technology (DDIT) is a state funded institution in Nadiad, Gujarat, India and was founded on 2 January 1968. </p>
+                        <p>Dharmsinh Desai Institute of Technology was founded in 1968 by Dharmsinh Desai, who then was a member of Parliament, as an institution of higher learning in the field of Engineering and Technology. It achieved autonomous status under Gujarat University in 1991, and Deemed University status in June 2000. </p>
                     </li>
                 </ul>
             </section>
@@ -35,8 +39,8 @@ const Home = () => {
                 <ul className="contact-content">
                     <li>
                         <i className="fa fa-map-marker"></i>
-                        <p>247 Westwood Lane<br />
-                            Blackfen, UK</p>
+                        <p>College Road, Nadiad  387 001 ,<br />
+                     Gujarat, India</p>
                     </li>
                     <li>
                         <i className="fa fa-phone"></i>
@@ -51,7 +55,7 @@ const Home = () => {
                 </ul>
             </section>
             <footer>
-                <p>All Right Reserved by Your Website</p>
+                <p>All Right Reserved &copy; copyright 2022</p>
             </footer>
         </div>
 

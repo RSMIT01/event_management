@@ -99,8 +99,8 @@ const Events = ({ Event, updatehandle }) => {
 
                     <div className="btns">
                         {user != null && user.role !== "admin" && !ispart && Event.datee >= today && <button type="button" onClick={participate} className="btn btn-danger">Paricipate</button>}
-                        {user != null && user.role !== "admin" && ispart && Event.datee > today && <button type="button" className="btn btn-secondary btn-lg" disabled>participated</button>}
                         <Link to="/more" onClick={savedata}><button type="button" className="btn btn-outline-primary">more</button></Link>
+                        {user != null && user.role !== "admin" && ispart && Event.datee > today && <button type="button" className="btn btn-secondary btn-lg" disabled>participated</button>}
                         {user != null && user.role === "admin" && <div onClick={() => { updatehandle(Event) }} className="edit"><i className="fas fa-edit"></i></div>}
                         {user != null && user.role === "admin" && <div className="dlt" onClick={handledelete}><i className="fas fa-trash"></i></div>}
                         {user != null && ispart && !ispartuploaded && user.role !== "admin" && Event.datee < today && <form className="certiform" onSubmit={certificateupload}>

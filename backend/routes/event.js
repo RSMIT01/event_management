@@ -51,7 +51,21 @@ router.delete("/:id", async (req, res) => {
 
 
 //get all events
-router.post("/allevent", async (req, res) => {
+
+router.post("/allevents", async (req, res) => {
+    try {
+        const ev = await Event.find();
+        res.status(200).json(ev)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
+
+
+
+//upcoming events
+router.post("/upcoming_events", async (req, res) => {
     try {
         const ev = await Event.find();
         let past = [];
