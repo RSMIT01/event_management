@@ -23,7 +23,9 @@ const Home = () => {
                 <Link onClick={aboutclick} className="banner-btn" to="/" > About Us</Link>
             </section>
 
+             
 
+           
             <section ref={about} className="about-area" id="about">
                 <h3 className="section-title" ref={about}>About Us</h3>
                 <ul className="about-content">
@@ -54,6 +56,7 @@ const Home = () => {
                     </li>
                 </ul>
             </section>
+           
             <footer>
                 <p>All Right Reserved &copy; copyright 2022</p>
             </footer>

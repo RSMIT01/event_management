@@ -191,6 +191,7 @@ ul.contact-content {
 .contact-content li p {
 	margin: 0;
 }
+
 @media (max-width: 1000px) {
 	.contact-content li {
 		flex-basis: 100%;

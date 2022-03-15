@@ -52,7 +52,7 @@ router.delete("/:id", async (req, res) => {
 
 //get all events
 
-router.post("/allevents", async (req, res) => {
+router.post("/all_events", async (req, res) => {
     try {
         const ev = await Event.find();
         res.status(200).json(ev)
@@ -134,9 +134,9 @@ router.post("/report", async (req, res) => {
                 filtered.push(newev);
             }
         })
-        if (filtered.length != 0) {
+    
             res.status(200).json(filtered);
-        }
+     
 
     } catch (error) {
         res.status(500).json(error)

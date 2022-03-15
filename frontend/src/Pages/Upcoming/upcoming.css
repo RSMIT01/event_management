@@ -4,6 +4,7 @@
 	font-size: 50px;
 	margin: 5% 0;
 	text-align: center;
+	margin-top: 40px;
 }
 .past_events h3{
 	text-transform: uppercase;
@@ -18,11 +19,23 @@
 	height: 53px;
 	
 }
+.filter{
+	background-color:white;
+	color: black;
+}
+.event_page{
+	background-color: black;
+	 color: white;
+	padding-bottom: 5vh;
+}
 @media (max-width: 1000px){
-	.Home_events h3 {
+	.events_head h3 {
+	
+		font-size: 35px;
 		
-		font-size: 25px;
-		
+	}
+	.Home_events{
+		margin-top: 60px;
 	}
 	
 }

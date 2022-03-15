@@ -5,7 +5,7 @@ import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 
 
-const Events = ({ Event, updatehandle }) => {
+const Events = ({ Event, updatehandle, handledelete }) => {
     const { user } = useContext(AuthContext)
 
     const ispart = (Event.participants.includes(user?._id));
@@ -34,14 +34,7 @@ const Events = ({ Event, updatehandle }) => {
         }
     }
 
-    const handledelete = async () => {
-        if (window.confirm('Are you want to delete this event?')) {
-            const res = await axios.delete(`/event/${Event._id}`)
-            if (!alert(res.data)) { window.location.reload(); }
 
-        }
-
-    }
     const savedata = () => {
         localStorage.setItem("eid", Event._id)
     }
@@ -79,12 +72,12 @@ const Events = ({ Event, updatehandle }) => {
     }
 
     return (
-        <div>
+        <div className="event_card ">
 
 
             <div className="event-conatainer">
                 <div className="image">
-                    {/* "https://img.freepik.com/free-psd/banner-template-concert_23-2148403186.jpg?size=626&ext=jpg" */}
+
                     <img src={pb + Event.banner} className="photo" alt="" />
 
                 </div>
@@ -92,26 +85,29 @@ const Events = ({ Event, updatehandle }) => {
                     <div className="title">{Event.title}</div>
                     <div className="event-data">
 
-                        <div className="time">Starting  from:{Event.datee}</div>
+                        <div className="time">Date:{Event.datee}</div>
                         <div className="category">{Event.category}</div>
                     </div>
                     <div className="discription">{Event.desc}</div>
 
                     <div className="btns">
                         {user != null && user.role !== "admin" && !ispart && Event.datee >= today && <button type="button" onClick={participate} className="btn btn-danger">Paricipate</button>}
-                        <Link to="/more" onClick={savedata}><button type="button" className="btn btn-outline-primary">more</button></Link>
-                        {user != null && user.role !== "admin" && ispart && Event.datee > today && <button type="button" className="btn btn-secondary btn-lg" disabled>participated</button>}
+                        {user != null && user.role !== "admin" && ispart && Event.datee >= today && <button type="button" className="btn btn-secondary btn-lg" disabled>participated</button>}
                         {user != null && user.role === "admin" && <div onClick={() => { updatehandle(Event) }} className="edit"><i className="fas fa-edit"></i></div>}
-                        {user != null && user.role === "admin" && <div className="dlt" onClick={handledelete}><i className="fas fa-trash"></i></div>}
-                        {user != null && ispart && !ispartuploaded && user.role !== "admin" && Event.datee < today && <form className="certiform" onSubmit={certificateupload}>
+                        {user != null && user.role === "admin" && <div className="dlt" onClick={() => handledelete(Event._id)}><i className="fas fa-trash"></i></div>}
+                        {user != null && ispart && !ispartuploaded && user.role !== "admin" && Event.datee < today && <form className="d-flex flex-column " onSubmit={certificateupload}>
                             <input required type="file" accept=".png,.jpeg,.jpg" onChange={(e) => setCertificateimg(e.target.files[0])} />
-                            <button type="submit" className="btn btn-secondary certificatebtn">Upload certificate</button>
+                            <button type="submit" className="btn btn-secondary mt-2">Upload certificate</button>
                         </form>}
                         {ispartuploaded && <button type="submit" className="btn btn-secondary certificatebtn">certificate uploaded</button>
                         }
+                        <Link to="/more" onClick={savedata}><button type="button" className="btn btn-outline-primary">more</button></Link>
                     </div>
                 </div>
             </div>
+
+
+            
 
         </div>
 

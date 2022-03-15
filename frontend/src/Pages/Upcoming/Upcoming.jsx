@@ -12,13 +12,15 @@ const Upcoming = () => {
     const [filtered, setFiltered] = useState([]);
     const [Load, setLoad] = useState(true);
     const [isfill, setIsfill] = useState(false);
-
+  
+    const[allcat,setallCat]=useState([]);
 
     const [uevent, setUevent] = useState('');
     const [banner, setBanner] = useState(null)
 
 
-
+     const close=useRef('')
+    
 
 
 
@@ -48,6 +50,7 @@ const Upcoming = () => {
     const handleupdatetevent = async (e) => {
         e.preventDefault();
         if (banner) {
+           
             const data = new FormData();
             const filename = Date.now() + banner.name;
             data.append("name", filename);
@@ -61,17 +64,71 @@ const Upcoming = () => {
             }
 
         }
-        else {
-            uevent.banner = Event.banner
-        }
+        
         try {
             await axios.put(`/event/${uevent._id}`, uevent);
-            alert("event updated successfully");
+            
 
         } catch (error) {
             console.log(error);
         }
-        window.location.reload();
+
+       
+         for(let index=0;index<allevents.length;index++)
+         {
+             const element=allevents[index]
+             if(element._id===uevent._id)
+             {
+                allevents[index]=Object.assign(uevent);
+                break;
+             }
+             
+         }
+         setAllEvents(allevents);
+         
+         for(let index=0;index<filtered.length;index++)
+         {
+             const element=filtered[index]
+             if(element._id===uevent._id)
+             {
+                filtered[index]=Object.assign(uevent);
+                break;
+             }
+             
+         }
+          setFiltered(filtered);
+          const temp= [...new Set(allevents.map((e) => { return e.category; }))];
+          setallCat(temp);
+         var today = new Date();
+         var dd = String(today.getDate()).padStart(2, '0');
+         var mm = String(today.getMonth() + 1).padStart(2, '0');
+         var yyyy = today.getFullYear();
+         today = yyyy + '-' + mm + '-' + dd;
+         let up_updated=[];
+         for(let idx=0;idx<allevents.length;idx++)
+         {
+             if(allevents[idx].datee>=today)
+             {
+                up_updated.push(allevents[idx]);
+             }
+         }
+         
+         setEvent(up_updated);
+         let past_updated=[];
+         for(let idx=0;idx<allevents.length;idx++)
+         {
+             if(allevents[idx].datee<today)
+             {
+                past_updated.push(allevents[idx]);
+             }
+         }
+         
+         setPastevent(past_updated);
+       
+       
+        close.current.click();
+         alert("event updated successfully");
+       
     }
     const handlechange = (e) => {
         setUevent({ ...uevent, [e.target.name]: e.target.value });
@@ -79,7 +136,26 @@ const Upcoming = () => {
 
 
 
+    const handledelete = async (id) => {
+        if (window.confirm('Are you want to delete this event?')) {
+            const res = await axios.delete(`/event/${id}`)
+         
+            const remaining_upcoming= event.filter((ev)=>{return ev._id!==id})
+            const remaining_past= pastevent.filter((ev)=>{return ev._id!==id})
+            const remaining_filtered= filtered.filter((ev)=>{return ev._id!==id})
+            setEvent(remaining_upcoming);
+            setPastevent(remaining_past);
+            setFiltered(remaining_filtered)
+            setAllEvents([...remaining_upcoming,...remaining_past]);
+            const temp=[...remaining_upcoming,...remaining_past]
+            const new_cat_temp=[...new Set(temp.map((e) => { return  e.category }))];
 
+            setallCat(new_cat_temp);
+            
+            alert(res.data)
+        } 
+
+    }
 
 
 
@@ -99,25 +175,29 @@ const Upcoming = () => {
     useEffect(() => {
         const fetchallEvents = async () => {
 
-            const res = await axios.post("/event/allevents");
+            const res = await axios.post("/event/all_events");
             setAllEvents(res.data);
-
+            const temp= [...new Set(res.data.map((e) => { return e.category; }))];
+            setallCat(temp);
         };
         fetchallEvents();
     }, [])
 
-    const allcat = [...new Set(allevents.map((e) => { return e.category; }))];
+       
 
-    //    const[cat,setCat]=useState('Select category');
-    const handlecat = (item) => {
-        const fill = allevents.filter((event) => event.category === item);
+
+   
+
+  
+    const handlecat = (e) => {
+        const fill = allevents.filter((event) => event.category === e.target.value);
         setFiltered(fill);
         setIsfill(true);
     }
 
 
     return (
-        <div>
+        <div className='event_page'>
 
             <div>
 
@@ -131,7 +211,7 @@ const Upcoming = () => {
                     <div className="modal-dialog ">
                         <div className="modal-content">
                             <div className="modal-header ">
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" ref={close} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
 
@@ -210,46 +290,38 @@ const Upcoming = () => {
 
             <div>
 
-                {/* <div className="btn-group">
-                    <button type="button" className="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        Select Category
-                    </button>
-                    <ul className="dropdown-menu">
-                        {allcat.map((item) => {
-                            return <li key={item} className="dropdown-item">{item}</li>
-                        })}
-                    </ul>
-                </div> */}
+            
                 <div className='d-flex justify-content-start mt-4 mx-5'>
 
-                    <label  className=' fs-2 fw-bold' htmlFor="events">Filter by category:</label>
+                    <label className=' fs-2 fw-bold' htmlFor="events">Filter by category:</label>
 
-                    <select className='mx-2 bg-info event_select text-white  border rounded border-info' name="events" id="events">
-                        <option onClick={() => setFiltered([])}  defaultValue="none">Select an Option</option>
+                    <select onChange={handlecat} className='mx-2 filter  event_select   border rounded border-info' name="events" id="events">
+                        <option defaultValue="none">Select an Option</option>
+                        {/* bg-info */}
                         {allcat.map((item) => {
-                            return <option key={item} onClick={() => handlecat(item)} >{item}</option>
+                            return <option key={item}  >{item}</option>
                         })}
 
                     </select>
                 </div>
             </div>
-            {isfill && <div className='Home_events'>
+            {isfill && <div className='Home_events events_head'>
                 {filtered.length !== 0 && <h3>Filtered events</h3>}
                 {filtered.length !== 0 && filtered.map((e) => (
-                    <Events key={e._id} Event={e} updatehandle={updatehandle} />
+                    <Events key={e._id} Event={e} updatehandle={updatehandle} handledelete={handledelete}/>
                 ))}
             </div>}
-            {(Load) ? <Loading /> : <div className="Home_events" >
+            {(Load) ? <Loading /> : <div className="Home_events events_head" >
                 <h3>Upcoming  Events</h3>
 
                 <div>
                     {event.map((e) => (
-                        <Events key={e._id} Event={e} updatehandle={updatehandle} />
+                        <Events key={e._id} Event={e} updatehandle={updatehandle} handledelete={handledelete} />
                     ))}
                 </div>
 
             </div>}
-            <section className="past_events" >
+            <div className="past_events events_head" >
 
                 <div>
 
@@ -257,11 +329,11 @@ const Upcoming = () => {
                         <div>
                             <h3>Past  Events</h3>
                             {pastevent.map((e) => (
-                                <Events key={e._id} Event={e} updatehandle={updatehandle} />
+                                <Events key={e._id} Event={e} updatehandle={updatehandle} handledelete={handledelete}/>
                             ))}
                         </div>}
                 </div>
-            </section>
+            </div>
         </div>
     )
 }

@@ -5,11 +5,14 @@ import Navbar from "../../components/Navbar/Navbar";
 import Notfound from "../../components/Notfound/Notfound";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const CreateEvent = () => {
 
 
     const { user } = useContext(AuthContext)
+    const navigate=useNavigate();
+
 
     const title = useRef();
     const category = useRef();
@@ -62,9 +65,7 @@ export const CreateEvent = () => {
         } catch (error) {
             console.log(error);
         }
-
-        window.location.reload();
-
+        navigate("/events")
 
     }
 

@@ -1,8 +1,9 @@
 import "./more.css"
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState,useContext } from 'react';
 import Navbar from "../../components/Navbar/Navbar";
 import axios from "axios";
 import Loading from '../../components/Loading/Loading';
+import { AuthContext } from "../../context/AuthContext";
 
 
 const More = () => {
@@ -10,6 +11,9 @@ const More = () => {
     const id = localStorage.getItem('eid');
     const refimg = useRef('');
     const [cimage, setCimage] = useState('');
+
+    const {user}= useContext(AuthContext)
+
 
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
@@ -72,7 +76,7 @@ const More = () => {
             <div className="data_event">
                 <div className="event_data">
                     <img src={pb + event.banner} alt="banner" className="event_image" />
-                    <div className="other_data">
+                    <div className="other_data container">
                         <div className="event_title">{event.title}</div>
                         <table>
                             <tbody>
@@ -133,11 +137,11 @@ const More = () => {
                                     <td>{event.fees}</td>
 
                                 </tr>
-                                <tr>
+                              { user!=null && user.role==="admin" && <tr>
                                     <td className="row_name">participants </td>
                                     <td>{event.participants.length}</td>
 
-                                </tr>
+                                </tr>}
                             </tbody>
                         </table>
 
@@ -154,7 +158,7 @@ const More = () => {
                                 </div>
                                 <img onClick={() => { clickimg(pb + e.certificate) }} src={pb + e.certificate} className="event_image" alt="..." />
                             </div>
-                        ))}s
+                        ))}
                     </div>
                 </div>}
             </div>}
