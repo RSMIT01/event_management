@@ -18,7 +18,9 @@ const Upcoming = () => {
     const [uevent, setUevent] = useState('');
     const [banner, setBanner] = useState(null)
 
-
+    const CLOUD_PRESET = process.env.REACT_APP_CLOUD_PRESET;
+    const CLOUD_NAME = process.env.REACT_APP_CLOUD_NAME;
+     
      const close=useRef('')
     
 
@@ -55,19 +57,22 @@ const Upcoming = () => {
             const filename = Date.now() + banner.name;
             data.append("name", filename);
             data.append("file", banner);
-            uevent.banner = filename;
+            data.append("upload_preset",CLOUD_PRESET);
+            data.append("cloud_name",CLOUD_NAME);
             try {
-                await axios.post("/upload", data)
+                const cres=await axios.post(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, data)
+               
+                uevent.banner=cres.data.url;
+               
 
             } catch (error) {
                 console.log(error);
             }
 
         }
-        
         try {
             await axios.put(`/event/${uevent._id}`, uevent);
-            
+           
 
         } catch (error) {
             console.log(error);
@@ -127,6 +132,7 @@ const Upcoming = () => {
        
        
         close.current.click();
+        closeclick();
          alert("event updated successfully");
        
     }
@@ -183,8 +189,11 @@ const Upcoming = () => {
         fetchallEvents();
     }, [])
 
-       
-
+    const imgbanner=useRef('');
+   const closeclick=()=>{
+       setBanner(null);
+       imgbanner.current.value = "";
+   }
 
    
 
@@ -202,7 +211,7 @@ const Upcoming = () => {
             <div>
 
 
-                <button type="button" ref={ref} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" ref={ref}  className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Launch demo modal
                 </button>
 
@@ -211,7 +220,7 @@ const Upcoming = () => {
                     <div className="modal-dialog ">
                         <div className="modal-content">
                             <div className="modal-header ">
-                                <button type="button" ref={close} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" ref={close} onClick={closeclick} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
 
@@ -269,7 +278,7 @@ const Upcoming = () => {
                                         </div>
                                         <div className="inputfield">
                                             <label htmlFor="photo">Banner</label>
-                                            <input id="photo" name="banner" type="file" style={{ color: "white" }} className="file_photo" accept=".png,.jpeg,.jpg" onChange={(e) => setBanner(e.target.files[0])} />
+                                            <input id="photo" name="banner" type="file" style={{ color: "white" }} ref={imgbanner} className="file_photo" accept=".png,.jpeg,.jpg" onChange={(e) => setBanner(e.target.files[0])} />
                                         </div>
                                         <div className="inputfield">
                                             <input type="submit" className="btn" value="Save changes" />

@@ -12,7 +12,8 @@ export const CreateEvent = () => {
 
     const { user } = useContext(AuthContext)
     const navigate=useNavigate();
-
+    const CLOUD_PRESET = process.env.REACT_APP_CLOUD_PRESET;
+    const CLOUD_NAME = process.env.REACT_APP_CLOUD_NAME;
 
     const title = useRef();
     const category = useRef();
@@ -51,9 +52,12 @@ export const CreateEvent = () => {
             const filename = Date.now() + banner.name;
             data.append("name", filename);
             data.append("file", banner);
-            newevent.banner = filename;
+            data.append("upload_preset",CLOUD_PRESET);
+            data.append("cloud_name",CLOUD_NAME);
             try {
-                await axios.post("/upload", data)
+                const cres=await axios.post(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, data)
+              
+                newevent.banner=cres.data.url;
             } catch (error) {
                 console.log(error);
             }
@@ -61,6 +65,7 @@ export const CreateEvent = () => {
         }
         try {
             await axios.post("/event/create", newevent)
+            
             alert("event created successfully");
         } catch (error) {
             console.log(error);

@@ -10,7 +10,8 @@ const Events = ({ Event, updatehandle, handledelete }) => {
 
     const ispart = (Event.participants.includes(user?._id));
     const [certificateimg, setCertificateimg] = useState(null)
-    const pb = process.env.REACT_APP_IMG_FOLDER;
+    const CLOUD_PRESET = process.env.REACT_APP_CLOUD_PRESET;
+    const CLOUD_NAME = process.env.REACT_APP_CLOUD_NAME;
 
     const ispartuploaded = (Event.uploaded.includes(user?._id));
 
@@ -35,9 +36,7 @@ const Events = ({ Event, updatehandle, handledelete }) => {
     }
 
 
-    const savedata = () => {
-        localStorage.setItem("eid", Event._id)
-    }
+    
 
     const certificateupload = async (e) => {
         e.preventDefault();
@@ -52,9 +51,12 @@ const Events = ({ Event, updatehandle, handledelete }) => {
             const filename = Date.now() + certificateimg.name;
             data.append("name", filename);
             data.append("file", certificateimg);
-            newcerti.certificate = filename;
+            data.append("upload_preset",CLOUD_PRESET);
+            data.append("cloud_name",CLOUD_NAME);
             try {
-                await axios.post("/upload", data)
+                const cres=await axios.post(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, data)
+               
+                newcerti.certificate=cres.data.url;
             } catch (error) {
                 console.log(error);
             }
@@ -78,7 +80,7 @@ const Events = ({ Event, updatehandle, handledelete }) => {
             <div className="event-conatainer">
                 <div className="image">
 
-                    <img src={pb + Event.banner} className="photo" alt="" />
+                    <img src={Event.banner} className="photo" alt="" />
 
                 </div>
                 <div className="detail">
@@ -101,13 +103,13 @@ const Events = ({ Event, updatehandle, handledelete }) => {
                         </form>}
                         {ispartuploaded && <button type="submit" className="btn btn-secondary certificatebtn">certificate uploaded</button>
                         }
-                        <Link to="/more" onClick={savedata}><button type="button" className="btn btn-outline-primary">more</button></Link>
+                        <Link to={`/more/${Event._id}`}><button type="button" className="btn btn-outline-primary">more</button></Link>
                     </div>
                 </div>
             </div>
 
 
-            
+
 
         </div>
 

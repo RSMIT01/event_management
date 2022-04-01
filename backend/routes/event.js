@@ -143,7 +143,9 @@ router.post("/report", async (req, res) => {
     }
 
 })
-//past event
+
+
+//get past event
 router.post("/pastevent", async (req, res) => {
     try {
         const ev = await Event.find();

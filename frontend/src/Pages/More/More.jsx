@@ -4,14 +4,16 @@ import Navbar from "../../components/Navbar/Navbar";
 import axios from "axios";
 import Loading from '../../components/Loading/Loading';
 import { AuthContext } from "../../context/AuthContext";
+import { useLocation } from "react-router-dom";
 
 
 const More = () => {
-    const pb = process.env.REACT_APP_IMG_FOLDER;
-    const id = localStorage.getItem('eid');
+  
+
     const refimg = useRef('');
     const [cimage, setCimage] = useState('');
-
+    const {pathname}=useLocation();
+    const id=pathname.substring(6);
     const {user}= useContext(AuthContext)
 
 
@@ -75,7 +77,7 @@ const More = () => {
         {(Load) ? <Loading /> :
             <div className="data_event">
                 <div className="event_data">
-                    <img src={pb + event.banner} alt="banner" className="event_image" />
+                    <img src={event.banner} alt="banner" className="event_image" />
                     <div className="other_data container">
                         <div className="event_title">{event.title}</div>
                         <table>
@@ -146,7 +148,8 @@ const More = () => {
                         </table>
 
                     </div>
-                </div>
+                </div> 
+                
                 {event.datee < today && certis.length !== 0 && <div className="certificate_container">
                     <h3 className="certi_title">  Certificates  </h3>
                     <div className="row certis">
@@ -156,7 +159,7 @@ const More = () => {
                                 <div className="d-flex justify-content-center">
                                     <h2 className="certi_name bg-dark text-white p-3 rounded-circle">{e.name}</h2>
                                 </div>
-                                <img onClick={() => { clickimg(pb + e.certificate) }} src={pb + e.certificate} className="event_image" alt="..." />
+                                <img onClick={() => { clickimg( e.certificate) }} src={ e.certificate} className="event_image" alt="..." />
                             </div>
                         ))}
                     </div>

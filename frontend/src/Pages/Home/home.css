@@ -159,6 +159,7 @@ ul.about-content {
 	}
 	.about-content li {
 		padding: 8px;
+		
 	}
 	
 }
@@ -202,6 +203,9 @@ ul.contact-content {
 	}
 	.contact-content li p {
 		padding: 0;
+	}
+	ul.about-content{
+		background-color: #fff;
 	}
 }
 /*footer*/

@@ -22,18 +22,20 @@ app.listen(3001,()=>{
     console.log("backend server is started");
 })
 
-const storage =multer.diskStorage({
-    destination:(req,file,cb)=>{
-     cb(null,"public/images");
-    },
-    filename:(req,file,cb)=>{
-        cb(null,req.body.name);
-    },
-})
+// const storage =multer.diskStorage({
+//     destination:(req,file,cb)=>{
+//      cb(null,"public/images");
+//     },
+//     filename:(req,file,cb)=>{
+//         cb(null,req.body.name);
+//     },
+// })
 
-const upload=multer({storage:storage });
-app.post("/api/upload",upload.single("file"),(req,res)=>{
+// const upload=multer({storage:storage });
+// upload.single("file"),
+app.post("/api/upload",(req,res)=>{
     try {
+     
         return res.status(200).json("file uploaded successfully");
     } catch (err) {
         console.log(err);
