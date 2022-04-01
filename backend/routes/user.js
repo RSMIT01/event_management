@@ -7,30 +7,29 @@ const nodemailer=require('nodemailer');
 const e = require("express");
 require("dotenv").config();
 
+const sendgridTransport = require('nodemailer-sendgrid-transport');
+
 //otp emailer
  const mailer=(email,otp)=>{
-    const tarnsporter=nodemailer.createTransport({
-          service:'gmail',
-          secure:false,
-          auth:{
-              user:process.env.SENDER_EMAIL,
-              pass:process.env.PASSWORD
-          }
-
-      })
+   
+    const transporter = nodemailer.createTransport(sendgridTransport({
+        auth: {
+            api_key: process.env.API_KEY  
+              }
+    }));
       const mailoptions={
-          from:process.env.SENDER_EMAIL,
           to:email,
+          from:process.env.SENDER_EMAIL,
           subject:'change password request',
           text:`your otp for reset password:${otp.code}`
       }
-      tarnsporter.sendMail(mailoptions,(err,info)=>{
+      transporter.sendMail(mailoptions,(err,info)=>{
           if(err)
           {
               console.log(err)
           }
           else{
-              console.log('email sent:'+ info.response);
+              console.log('email sent:');
           }
       })
  }
@@ -38,31 +37,28 @@ require("dotenv").config();
 //participation mailer
 
 const particpation_mail=(email,title)=>{
-    const tarnsporter=nodemailer.createTransport({
-          service:'gmail',
-          secure:false,
-          auth:{
-              user:process.env.SENDER_EMAIL,
-              pass:process.env.PASSWORD
-          }
-
-      })
+    const transporter = nodemailer.createTransport(sendgridTransport({
+        auth: {
+            api_key: process.env.API_KEY  
+              }
+    }));
       const mailoptions={
-          from:process.env.SENDER_EMAIL,
+         from:process.env.SENDER_EMAIL,
           to:email,
           subject:'Participated successfully',
           text:`thank you for participate in ${title}`
       }
-      tarnsporter.sendMail(mailoptions,(err,info)=>{
+      transporter.sendMail(mailoptions,(err,info)=>{
           if(err)
           {
               console.log(err)
           }
           else{
-              console.log('email sent:'+ info.response);
+              console.log('email sent:');
           }
       })
  }
+
 
 
 
